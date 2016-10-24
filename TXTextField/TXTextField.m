@@ -8,9 +8,7 @@
 
 #import "TXTextField.h"
 
-
 #define RGBA(r,g,b,a)   [UIColor colorWithRed:(float)r/255.0f green:(float)g/255.0f blue:(float)b/255.0f alpha:a]
-
 
 @interface TXTextField()<UITextFieldDelegate>
 @property(nonatomic, strong)UILabel  *mailLabel;
@@ -128,6 +126,7 @@
     if (self.didPressedReturnCompletion) {
         self.didPressedReturnCompletion(self);
     }
+    [self endEditing:YES];
     return YES;
 }
 
