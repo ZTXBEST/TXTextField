@@ -19,6 +19,9 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     
+    /**
+     *  手动创建textfiled
+     */
     TXTextField * field = [[TXTextField alloc] initWithFrame:CGRectMake(100, 200, 200, 30) fontSize:12];
     field.placeholder = @"输入邮箱地址";
     field.mailTypeArray = [NSMutableArray arrayWithObjects:@"@qq.com",@"@163.com",@"@126.com",@"@yahoo.com",@"@139.com",@"@henu.com", nil];
@@ -29,7 +32,9 @@
     };
     [self.view addSubview:field];
     
-    
+    /**
+     *  xib创建textfiled
+     */
     self.textField.mailTypeArray= [NSMutableArray arrayWithObjects:@"@qq.com",@"@163.com",@"@126.com",@"@yahoo.com",@"@139.com",@"@henu.com", nil];
     self.textField.mailMatchColor = [UIColor redColor];
     self.textField.didPressedReturnCompletion = ^(UITextField * textField){
