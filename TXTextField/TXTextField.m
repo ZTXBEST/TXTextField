@@ -8,6 +8,15 @@
 
 #import "TXTextField.h"
 
+/**
+ *  textField布局类型
+ */
+typedef NS_ENUM( NSUInteger,TXLayoutType) {
+    TXLayoutTypeAuto, // 自动布局
+    TXLayoutTypeTypeHand //手动布局
+};
+
+
 #define RGBA(r,g,b,a)   [UIColor colorWithRed:(float)r/255.0f green:(float)g/255.0f blue:(float)b/255.0f alpha:a]
 
 @interface TXTextField()<UITextFieldDelegate>
@@ -17,30 +26,65 @@
 
 @implementation TXTextField
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self configInitMessage:TXLayoutTypeAuto];
+}
+
 - (instancetype)initWithFrame:(CGRect)frame fontSize:(CGFloat)fontSize{
     self = [super init];
     if (self) {
         self.frame = frame;
         self.font = [UIFont systemFontOfSize:fontSize];
         self.borderStyle=UITextBorderStyleRoundedRect;
-        [self configInitMessage];
+        [self configInitMessage:TXLayoutTypeTypeHand];
     }
     return self;
 }
 
-- (void)configInitMessage {
+- (void)configInitMessage:(TXLayoutType)layoutType {
     self.delegate = self;
     _email = [[NSMutableString alloc]initWithCapacity:0];
     _mailLabel = [[UILabel alloc] init];
     _mailLabel.textColor = RGBA(170, 170, 170, 1);
     _mailLabel.font = self.font;
-    _mailLabel.frame = CGRectMake(5, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds) - 2);
-    [self addSubview:_mailLabel];
+    if (layoutType==TXLayoutTypeAuto) {
+        [self addSubview:_mailLabel];
+        _mailLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        self.translatesAutoresizingMaskIntoConstraints = NO;
+        NSLayoutConstraint *left = [NSLayoutConstraint constraintWithItem:_mailLabel attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeLeft multiplier:1 constant:6];
+        NSLayoutConstraint *right = [NSLayoutConstraint constraintWithItem:_mailLabel attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeRight multiplier:1 constant:0];
+        NSLayoutConstraint *top = [NSLayoutConstraint constraintWithItem:_mailLabel attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeTop multiplier:1 constant:0];
+         NSLayoutConstraint *bottom = [NSLayoutConstraint constraintWithItem:_mailLabel attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self attribute:NSLayoutAttributeBottom multiplier:1 constant:-1];
+        
+        [self addConstraint:left];
+        [self addConstraint:right];
+        [self addConstraint:top];
+        [self addConstraint:bottom];
+    }
+    else {
+        _mailLabel.frame = CGRectMake(6, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds) - 2);
+        [self addSubview:_mailLabel];
+    }
 }
 
 - (void)setMailMatchColor:(UIColor *)mailMatchColor {
     _mailMatchColor=mailMatchColor;
     _mailLabel.textColor=mailMatchColor;
+}
+
+- (void)setStyle:(UITextBorderStyle)style {
+    _style = style;
+    self.borderStyle = style;
+    if (style == UITextBorderStyleRoundedRect) {
+        _mailLabel.frame = CGRectMake(6, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds) - 2);
+    }
+    else if (style == UITextBorderStyleBezel) {
+        _mailLabel.frame = CGRectMake(6, 1, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
+    }
+    else {
+        _mailLabel.frame = CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds) - 2);
+    }
 }
 
 /**

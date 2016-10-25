@@ -9,6 +9,7 @@
 #import "ViewController.h"
 #import "TXTextField.h"
 @interface ViewController ()
+@property (weak, nonatomic) IBOutlet TXTextField *textField;
 
 @end
 
@@ -21,11 +22,19 @@
     TXTextField * field = [[TXTextField alloc] initWithFrame:CGRectMake(100, 200, 200, 30) fontSize:12];
     field.placeholder = @"输入邮箱地址";
     field.mailTypeArray = [NSMutableArray arrayWithObjects:@"@qq.com",@"@163.com",@"@126.com",@"@yahoo.com",@"@139.com",@"@henu.com", nil];
-//    Field.mailMatchColor = [UIColor redColor];
+//    field.mailMatchColor = [UIColor redColor];
+//    field.style = UITextBorderStyleLine;
     field.didPressedReturnCompletion = ^(UITextField * textField){
         NSLog(@"textFieldText%@",textField);
     };
     [self.view addSubview:field];
+    
+    
+    self.textField.mailTypeArray= [NSMutableArray arrayWithObjects:@"@qq.com",@"@163.com",@"@126.com",@"@yahoo.com",@"@139.com",@"@henu.com", nil];
+    self.textField.mailMatchColor = [UIColor redColor];
+    self.textField.didPressedReturnCompletion = ^(UITextField * textField){
+        NSLog(@"textFieldText%@",textField);
+    };
 }
 
 

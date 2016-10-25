@@ -27,6 +27,10 @@ typedef void(^didPressedReturn)(UITextField *);
  */
 @property (nonatomic, strong) NSMutableArray *mailTypeArray;
 
+/**
+ *  textField外观样式,默认为RoundedRect
+ */
+@property (nonatomic, assign) UITextBorderStyle style;
 
 /**
  *  通过手写创建textField时候调用
